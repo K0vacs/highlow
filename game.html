@@ -69,6 +69,10 @@
 
             function decision( card ) {
                 if( card == 'K' || card == 'Q' || card == 'J' ) {
+                    value = 12;
+                } else if( card == 'Q' ) {
+                    value = 11;
+                } else if( card == 'J' ) {
                     value = 10;
                 } else if( card == 'A' ) {
                     value = 1;
@@ -88,7 +92,7 @@
                 var value = decision( cards[i].value );
                 var next = decision( cards[i+1].value );
                 
-                if( value > next ) {
+                if( value < next ) {
                     score();
                 } else {
                     $(".score").text(0);
@@ -106,7 +110,7 @@
                 var value = decision( cards[i].value );
                 var next = decision( cards[i+1].value );
 
-                if( value < next ) {
+                if( value > next ) {
                     score();
                 } else {
                     $(".score").text(0);
