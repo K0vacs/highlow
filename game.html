@@ -11,24 +11,27 @@
         <h1 class="value"></h1>
         <h1 class="suit"></h1>
     </div>
-    <button class="button">Button</button>
+    <button card="0" class="button">Button</button>
 
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script>
 
     <script>
         $(document).ready(function() {
+            display();
 
-            $(".button").on("click", function(){
-                $.ajax({url: "https://higher-lower.code23.com/api/deck", 
-                type: 'GET',
-                crossDomain: true,
-                dataType: 'json',
-                headers: {  'Access-Control-Allow-Origin': 'https://higher-lower.code23.com' },
-                success: function(result){
-                    shuffle(result);
-                }});
-            });
+            $("button").on('click', function() {
+                display();
+            })
+
+            $.ajax({url: "https://higher-lower.code23.com/api/deck", 
+            type: 'GET',
+            crossDomain: true,
+            dataType: 'json',
+            headers: {  'Access-Control-Allow-Origin': 'https://higher-lower.code23.com' },
+            success: function(result){
+                shuffle(result);
+            }});
 
             function shuffle(cards) {
                 var currentIndex = cards.length, temporaryValue, randomIndex;
@@ -43,14 +46,18 @@
                     cards[randomIndex] = temporaryValue;
                 }
 
-                console.log(cards)
-                display(cards);
-                return cards;
+                console.log(cards);
+                localStorage.setItem('cards', JSON.stringify(cards));
             }
 
-            function display(cards) {
-                $(".value").text(cards[0].value);
-                $(".suit").text(cards[0].suit);
+            function display() {
+                var cards = localStorage.getItem('cards');
+                var i = parseInt($("button").attr("card"));
+                cards = JSON.parse(cards)
+                
+                $(".value").text(cards[i].value);
+                $(".suit").text(cards[i].suit);
+                $("button").attr("card", i + 1);
             }
 
         });
