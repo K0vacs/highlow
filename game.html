@@ -7,7 +7,10 @@
 </head>
 <body>
 
-    <h1>Hello World!</h1>
+    <div>
+        <h1 class="value"></h1>
+        <h1 class="suit"></h1>
+    </div>
     <button class="button">Button</button>
 
 
@@ -23,12 +26,35 @@
                 dataType: 'json',
                 headers: {  'Access-Control-Allow-Origin': 'https://higher-lower.code23.com' },
                 success: function(result){
-                    console.log(result)
+                    shuffle(result);
                 }});
             });
 
+            function shuffle(cards) {
+                var currentIndex = cards.length, temporaryValue, randomIndex;
+
+                while (0 !== currentIndex) {
+
+                    randomIndex = Math.floor(Math.random() * currentIndex);
+                    currentIndex -= 1;
+
+                    temporaryValue = cards[currentIndex];
+                    cards[currentIndex] = cards[randomIndex];
+                    cards[randomIndex] = temporaryValue;
+                }
+
+                console.log(cards)
+                display(cards);
+                return cards;
+            }
+
+            function display(cards) {
+                $(".value").text(cards[0].value);
+                $(".suit").text(cards[0].suit);
+            }
+
         });
     </script>
-    
+
 </body>
 </html>
