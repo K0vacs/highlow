@@ -8,7 +8,7 @@
 <body>
 
     <div id="deck" card="0">
-        <h1>Score: <span class="score"></span></h1>
+        <h1>Score: <span class="score">0</span></h1>
         <h1>Value: <span class="value"></span></h1>
         <h1>Suit: <span class="suit"></span></h1>
     </div>
@@ -53,27 +53,17 @@
 
                 console.log(cards);
                 localStorage.setItem('cards', JSON.stringify(cards));
-                display();
+                display(0);
             }
 
-            function display() {
+            function display(i) {
                 var cards = localStorage.getItem('cards');
                 cards = JSON.parse(cards);
-                var i = $("#deck").attr("card");
                 
                 
-                console.log(i);
                 $(".value").text(cards[i].value);
                 $(".suit").text(cards[i].suit);
-                $("#deck").attr("card", i++);
-
-                var score = 0;
-                var value;
-                var next = cards[i++].value;
-
-
-
-
+                
 
             }
 
@@ -96,19 +86,16 @@
                 var i = parseInt($("#deck").attr("card"));
 
                 var value = decision( cards[i].value );
-                var next = decision( cards[i++].value );
+                var next = decision( cards[i+1].value );
                 
-                console.log(next);
-
                 if( value > next ) {
-                    console.log("next");
                     score();
+                } else {
+                    $(".score").text(0);
                 }
 
-                $("#deck").attr("card", i++);
-                return null;
-                
-                
+                $("#deck").attr("card", i+1);
+                display(i+1);
             }
 
             function lower() {
@@ -116,18 +103,21 @@
                 cards = JSON.parse(cards);
                 var i = parseInt($("#deck").attr("card"));
 
-                var value = cards[i].value;
-                var next = cards[i++].value;
+                var value = decision( cards[i].value );
+                var next = decision( cards[i+1].value );
 
                 if( value < next ) {
-                    return score();
+                    score();
+                } else {
+                    $(".score").text(0);
                 }
-                $("#deck").attr("card", i++);
-                return null;
+                $("#deck").attr("card", i+1);
+                display(i+1);
             }
 
             function score() {
-                $(".score").text("1");
+                var score = parseInt($(".score").text());
+                $(".score").text(score+1);
             }
 
         });
